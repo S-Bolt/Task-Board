@@ -10,13 +10,13 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     //making the card
-    let $cardBody = $("<div>").addClass("card-body");
+    let $taskCard = $("<div>").addClass("card-body");
     let $cardTitle = $("<h2>").addClass("card-title").text(task.title);
     let $cardDueDate = $("<p>").addClass("card-text").text("Due Date: " + task.dueDate);
     let $cardDescription = $("<p>").addClass("card-text").text(task.description);
     let $deleteButton = $("<button>").addClass("btn btn-danger delete-task").attr("data-task-id", task.id).text("Delete");
 
-    $cardBody.append($cardTitle, $cardDueDate, $cardDescription, $deleteButton);
+    $taskCard.append($cardTitle, $cardDueDate, $cardDescription, $deleteButton);
 
    return $taskCard;
 }
