@@ -1,5 +1,5 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
+let taskList = JSON.parse(localStorage.getItem("tasks")) || []; // || [] without it it will return null blaue. this ensures if no vlaue's are stored it sees the emmpty array.
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
@@ -50,9 +50,33 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
-    event.preventDefault()
+    event.preventDefault();
 
-    
+    //retrieving values from form
+    let title = $("#taskTitle").val();
+    let dueDate = $("#taskDueDate").val();
+    let description = $("#taskDescription").val();
+
+    let newTask = {
+        id: generateTaskId(),
+        title: title,
+        dueDate: dueDate,
+        description: description,
+        progressState: "Not Yet Started"
+    };
+
+    taskList.push(newTask);
+
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+
+    //Clear form
+    $("taskTitle").val("");
+    $("taskDueDate").val("");
+    $("taskDescription").val("");
+
+    renderTaskList();
+
+    $("#formModal").modal("hide");
 
 }
 
@@ -68,6 +92,11 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+    
     renderTaskList();
 
+
+$(document).on("click", "#formModal .modal-footer button", function(event) {
+    handleAddTask(event);
+});
 });
