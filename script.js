@@ -23,7 +23,7 @@ function createTaskCard(task) {
     $deleteButton.click(handleDeleteTask);
 
    return $taskCard;
-   console.log(`return`)
+   
 };
 let renderCounter = 0; // Counter to track the number of renderings
 // Todo: create a function to render the task list and make cards draggable
@@ -62,8 +62,11 @@ console.log(laneMap);
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
     console.log("handleAddTask INVOKED")
+    console.log("Event target:", event.target);
+    console.log("Event current target:", event.currentTarget);
     event.preventDefault();
-console.log(`handle`);
+
+    // Prevent multiple calls if the task list has already been rendered
 
     //retrieving values from form
     let title = $("#taskTitle").val();
@@ -71,7 +74,32 @@ console.log(`handle`);
     let description = $("#taskDescription").val();
 
     let newTaskId = generateTaskId();
+// Check if a task with the same ID already exists
+let existingTaskIndex = taskList.findIndex(task => task.id === newTaskId);
 
+if (existingTaskIndex !== -1) {
+    // Update the existing task instead of adding a new one
+    taskList[existingTaskIndex].title = title;
+    taskList[existingTaskIndex].dueDate = dueDate;
+    taskList[existingTaskIndex].description = description;
+// Update the task in localStorage
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+
+ //Clear form
+    $("#taskTitle").val("");
+    $("#taskDueDate").val("");
+    $("#taskDescription").val("");
+    console.log(`clear form`)
+
+    renderTaskList();
+        console.log(` handle render`);
+
+    $("#formModal").modal("hide");
+
+   return;
+}
+
+    // Add a new task
     let newTask = {
         id: newTaskId,
         title: title,
@@ -79,23 +107,29 @@ console.log(`handle`);
         description: description,
         progressState: "Not Yet Started"
     };
-console.log(`handle new task`)
-    taskList.push(newTask);
-console.log(`handle push`);
-    localStorage.setItem("tasks", JSON.stringify(taskList));
- console.log(`handle storage`)
-    //Clear form
-    $("#taskTitle").val("");
-    $("#taskDueDate").val("");
-    $("#taskDescription").val("");
-console.log(`clear form`);
-    renderTaskList();
-   console.log(` handle render`);
-    $("#formModal").modal("hide");
-    console.log(`hide`)
+        console.log(`handle new task`)
+        taskList.push(newTask);
+        console.log(`handle push`);
+        localStorage.setItem("tasks", JSON.stringify(taskList));
+        console.log(`handle storage`);
     
-};
+        //Clear form
+        $("#taskTitle").val("");
+        $("#taskDueDate").val("");
+        $("#taskDescription").val("");
+        console.log(`clear form`);
 
+         // Render the updated task list
+        renderTaskList();
+        console.log(` handle render`);
+
+        // Hide the modal
+        $("#formModal").modal("hide");
+ 
+        // Reset the taskListRendered flag
+        taskListRendered = false;
+};
+   
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
     let taskId = $(this).attr("data-task-id");
@@ -106,15 +140,32 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    let taskId = ui.draggable.data("task-id");
+    let targetLaneID = $(this).attr("id");
 
+    const laneToProgressState = {
+        "to-do": "Not Yet Started",
+        "in-progress": "In Porgress",
+        "done": "Completed"
+    };
+
+    let newProgressState = laneToProgressState[targetLaneID];
+
+    if (newProgressState === undefined){
+        console.error("invalid target lane ID:", targetLaneID);
+        return;
+    }
 };
-
 
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-    $(document).ready(function () {
-        $("#formModal .modal-footer button").click(handleAddTask);
-        renderTaskList(); // Render task list when the page 
+    console.log(`Document ready`);
+
+    $(".modal-footer button").click(function(event) {
+        console.log("Button clicked");
+        handleAddTask(event);
+
     });
+    
 });
