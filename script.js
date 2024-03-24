@@ -11,7 +11,7 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     //making the card
-    let $taskCard = $("<div>").addClass("card-body");
+    let $taskCard = $("<div>").addClass("task-card-body");
     let $cardTitle = $("<h2>").addClass("card-title").text(task.title);
     let $cardDueDate = $("<p>").addClass("card-text").text("Due Date: " + task.dueDate);
     let $cardDescription = $("<p>").addClass("card-text").text(task.description);
@@ -19,7 +19,7 @@ function createTaskCard(task) {
 
     $taskCard.append($cardTitle, $cardDueDate, $cardDescription, $deleteButton);
     console.log(`append1`)
-//event leister to delete
+//event listner to delete
     $deleteButton.click(handleDeleteTask);
 
    return $taskCard;
@@ -47,14 +47,11 @@ console.log(laneMap);
         $targetLane.find(".card-body").append($taskCard);
         console.log("Task card appended to lane:", $targetLane);
     
-// making the card draggable.  Added extra features to experiment
-        $taskCard.draggable({
-            revert: "invalid",  //true,invalid,valid
+        $(".task-card-body").draggable({
+            revert: "invalid",
             helper: "clone",
-            
             cursor: "crosshair"
-          });
-          console.log("Task card made draggable.");
+        });
     })
     console.log(`Render ${renderCounter} completed`);
 };
@@ -135,22 +132,25 @@ function handleDeleteTask(event){
     let taskId = $(this).attr("data-task-id");
     taskList = taskList.filter(task => task.id !== taskId);
     localStorage.setItem("tasks", JSON.stringify(taskList));
-    $(this).closest(".card-body").remove();
+    $(this).closest(".task-card-body").remove();
 };
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
     event.preventDefault();
+
     let taskId = ui.draggable.data("task-id");
     let targetLaneID = $(this).attr("id");
 
+//check these match to html id's
     const laneToProgressState = {
-        "to-do": "Not Yet Started",
-        "in-progress": "In Porgress",
-        "done": "Completed"
+        "#to-do-cards": "Not Yet Started",
+        "#in-progress-cards": "In Progress",
+        "#done-cards": "Completed"
     };
 
     let newProgressState = laneToProgressState[targetLaneID];
+    console.log("targetLaneID", targetLaneID);
 
     if (newProgressState === undefined){
         console.error("invalid target lane ID:", targetLaneID);
@@ -180,9 +180,27 @@ $(document).ready(function () {
 
     });
 
-    $(".column").droppable({
-        accept: ".taskCard", // Specify the draggable elements
-        drop: handleDrop // Specify the function to handle the drop event
+    $(".task-card-body").draggable({
+        //revert: "invalid",  //true,invalid,valid
+        //helper: "clone",
+        cursor: "crosshair"
+      });
+      console.log("Task card made draggable.");
+
+    $(".droppable-area").droppable({
+        accept:".task-card-body",
+        
+
+        drop: function(event, ui) {
+            $(this).addClass("ui-state-highlight"); // Add the highlight class
+            handleDrop(event, ui);
+
+        },
+        out: function(event, ui) {
+            $(this).removeClass("ui-state-highlight"); // Remove the highlight class when dragging out
+        
+         }
+
     });
     
 });
