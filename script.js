@@ -50,8 +50,8 @@ console.log(laneMap);
 // making the card draggable.  Added extra features to experiment
         $taskCard.draggable({
             revert: "invalid",  //true,invalid,valid
-           helper: "clone",
-            //delay: "delay",
+            helper: "clone",
+            
             cursor: "crosshair"
           });
           console.log("Task card made draggable.");
@@ -140,6 +140,7 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    event.preventDefault();
     let taskId = ui.draggable.data("task-id");
     let targetLaneID = $(this).attr("id");
 
@@ -155,6 +156,17 @@ function handleDrop(event, ui) {
         console.error("invalid target lane ID:", targetLaneID);
         return;
     }
+    //finding dropped task in tasklist array
+    let droppedTaskIndex = taskList.findIndex(task => task.id ===taskId);
+    if (droppedTaskIndex !== -1){
+        taskList[droppedTaskIndex].progressState = newProgressState;
+        
+        localStorage.setItem("tasks", JSON.stringify(taskList));
+
+        renderTaskList();
+    } else {
+        console.error("Dropped task not found in taskList", taskId)
+    }
 };
 
 
@@ -166,6 +178,11 @@ $(document).ready(function () {
         console.log("Button clicked");
         handleAddTask(event);
 
+    });
+
+    $(".column").droppable({
+        accept: ".taskCard", // Specify the draggable elements
+        drop: handleDrop // Specify the function to handle the drop event
     });
     
 });
