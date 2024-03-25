@@ -38,6 +38,9 @@ function renderTaskList() {
     };
 console.log(laneMap);
 
+// Clear existing task cards from all lanes(debugging attempt (this actually worked and the duplicates stopped!))
+$(".card-body").empty();
+
     taskList.forEach(task => {
         console.log("processing task:", task);
         let $taskCard = createTaskCard(task);
