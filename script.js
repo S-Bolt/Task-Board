@@ -1,10 +1,10 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks")) || []; // || [] without it it will return null bc. this ensures if no valaue's are stored it sees the emmpty array.
-let nextId = JSON.parse(localStorage.getItem("nextId")) || 0;
+let nextId = JSON.parse(localStorage.getItem("nextId")) || 0;//if no value is found 0 is default
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-    return '_' + Math.random().toString(36).slice(2, 9);
+    return  Math.random().toString(36).slice(2, 9);
     //return nextId++;
 };
 
@@ -13,7 +13,7 @@ function createTaskCard(task) {
     //making the card
     let $taskCard = $("<div>").addClass("task-card-body");
     let $cardTitle = $("<h2>").addClass("card-title").text(task.title);
-    let $cardDueDate = $("<p>").addClass("card-text").text("Due Date: " + task.dueDate);
+    let $cardDueDate = $("<p>").addClass("card-text").text("Due Date: " + dayjs(task.dueDate).format("MMM D"));//added dayjs format
     let $cardDescription = $("<p>").addClass("card-text").text(task.description);
     let $deleteButton = $("<button>").addClass("btn btn-danger delete-task").attr("data-task-id", task.id).text("Delete");
 
@@ -25,11 +25,12 @@ function createTaskCard(task) {
    return $taskCard;
    
 };
-let renderCounter = 0; // Counter to track the number of renderings
+let renderCounter = 0; // Counter to track the number of renderings-"debugging defforts"
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
     renderCounter++; // Increment the rendering counter
     console.log(`Render ${renderCounter} started`);
+
     const laneMap = {
         "Not Yet Started": "#to-do",
         "In Progress": "#in-progress",
@@ -71,7 +72,7 @@ function handleAddTask(event){
     let description = $("#taskDescription").val();
 
     let newTaskId = generateTaskId();
-// Check if a task with the same ID already exists
+// Check if a task with the same ID already exists"part of debugging effort"
 let existingTaskIndex = taskList.findIndex(task => task.id === newTaskId);
 
 if (existingTaskIndex !== -1) {
@@ -181,9 +182,11 @@ $(document).ready(function () {
     });
 
     $(".task-card-body").draggable({
-        //revert: "invalid",  //true,invalid,valid
+        revert: "invalid",  
         //helper: "clone",
-        cursor: "crosshair"
+        cursor: "crosshair",
+        //stack: ".task-card-body",//fix?no
+       // appendTo: ".droppable-area"//fix?no
       });
       console.log("Task card made draggable.");
 
@@ -193,6 +196,7 @@ $(document).ready(function () {
 
         drop: function(event, ui) {
             $(this).addClass("ui-state-highlight"); // Add the highlight class
+            $(".task-card-body").append(ui.draggable);//attempt to fix?
             handleDrop(event, ui);
 
         },
