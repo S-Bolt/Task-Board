@@ -13,12 +13,12 @@ function createTaskCard(task) {
     //enabling the color coding for how close or past due tate the task is.
     let daysUntilDue = dayjs(task.dueDate).diff(dayjs(),"day");
     let cardColor //undefined
-        if (daysUntilDue > 7){
-            cardColor = "green";
-        }   else if (daysUntilDue <= 7){
+        if (daysUntilDue < 0){
+            cardColor = "red";//overdue
+        }   else if (daysUntilDue <=7){
             cardColor = "yellow";
         }   else {
-            cardColor = "red";//overdue
+            cardColor = "green";
         };
     
 
