@@ -21,7 +21,6 @@ function createTaskCard(task) {
             cardColor = "green";
         };
     
-
     //making the card
     let $taskCard = $("<div>").addClass("task-card-body").css("background-color", cardColor);//added .css background color to this to express days until due
     let $cardTitle = $("<h2>").addClass("card-title").text(task.title);
