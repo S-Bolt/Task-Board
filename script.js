@@ -10,8 +10,20 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
+    //enabling the color coding for how close or past due tate the task is.
+    let daysUntilDue = dayjs(task.dueDate).diff(dayjs(),"day");
+    let cardColor //undefined
+        if (daysUntilDue > 7){
+            cardColor = "green";
+        }   else if (daysUntilDue <= 7){
+            cardColor = "yellow";
+        }   else {
+            cardColor = "red";//overdue
+        };
+    
+
     //making the card
-    let $taskCard = $("<div>").addClass("task-card-body");
+    let $taskCard = $("<div>").addClass("task-card-body").css("background-color", cardColor);//added .css background color to this to express days until due
     let $cardTitle = $("<h2>").addClass("card-title").text(task.title);
     let $cardDueDate = $("<p>").addClass("card-text").text("Due Date: " + dayjs(task.dueDate).format("MMM D"));//added dayjs format
     let $cardDescription = $("<p>").addClass("card-text").text(task.description);
