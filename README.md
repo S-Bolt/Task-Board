@@ -1,5 +1,5 @@
 # Task-Board
-    Hi!  Welcome to the Kanban styled task-board.  Here you can create task and organize your workflow
+    Hi!  Welcome to the Kanban styled task-board.  Here you can create task and organize your workflow.
 
 ## Description
     The task-board allows userst to create new task by adding a title, due date, and description of the task.  There are three lanes to place the task into depicting the progress of that task.  Each task changes colors as the due date grows near or expires.

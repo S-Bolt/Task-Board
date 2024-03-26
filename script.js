@@ -10,9 +10,9 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    //enabling the color coding for how close or past due tate the task is.
+    //enabling the color coding for how close or past due date the task is.
     let daysUntilDue = dayjs(task.dueDate).diff(dayjs(),"day");
-    let cardColor //undefined
+    let cardColor; //undefined
         if (daysUntilDue < 0){
             cardColor = "red";//overdue
         }   else if (daysUntilDue <=7){
@@ -36,7 +36,7 @@ function createTaskCard(task) {
    return $taskCard;
    
 };
-let renderCounter = 0; // Counter to track the number of renderings-"debugging defforts"
+let renderCounter = 0; // Counter to track the number of renderings-"debugging efforts"
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
     renderCounter++; // Increment the rendering counter
@@ -50,21 +50,20 @@ function renderTaskList() {
 console.log(laneMap);
 
 // Clear existing task cards from all lanes(debugging attempt (this actually worked and the duplicates stopped!))
-$(".card-body").empty();
+$(".droppable-area").empty();
 
     taskList.forEach(task => {
         console.log("processing task:", task);
         let $taskCard = createTaskCard(task);
         console.log("created task card:", $taskCard);
         let $targetLane = $(laneMap[task.progressState]);
-        console.log("Target lane:", $targetLane);
+        console.log("target lane:", $targetLane);
     
-        $targetLane.find(".card-body").append($taskCard);
+        $targetLane.find(".droppable-area").append($taskCard);
         console.log("Task card appended to lane:", $targetLane);
     
         $(".task-card-body").draggable({
-            revert: "invalid",
-            helper: "clone",
+            revert: "invalid", 
             cursor: "crosshair"
         });
     })
@@ -122,7 +121,7 @@ if (existingTaskIndex !== -1) {
         console.log(`handle new task`)
         taskList.push(newTask);
         console.log(`handle push`);
-        localStorage.setItem("tasks", JSON.stringify(taskList));
+        localStorage.setItem("tasks", JSON.stringify(taskList));//updates task key with newTask object
         console.log(`handle storage`);
     
         //Clear form
@@ -166,7 +165,7 @@ function handleDrop(event, ui) {
 
     let newProgressState = laneToProgressState[targetLaneID];
     console.log("targetLaneID", targetLaneID);
-
+//checks target lane id matches known lanes
     if (newProgressState === undefined){
         console.error("invalid target lane ID:", targetLaneID);
         return;
