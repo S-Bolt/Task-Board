@@ -85,7 +85,7 @@ function handleAddTask(event){
     let description = $("#taskDescription").val();
 
     let newTaskId = generateTaskId();
-// Check if a task with the same ID already exists"part of debugging effort"
+// Check if a task with the same ID already exists using findIndex method"part of debugging effort"
 let existingTaskIndex = taskList.findIndex(task => task.id === newTaskId);
 
 if (existingTaskIndex !== -1) {
@@ -159,7 +159,7 @@ function handleDrop(event, ui) {
 //check these match to html id's
     const laneToProgressState = {
         "#to-do-cards": "Not Yet Started",
-        "#in-progress-cards": "In Progress",
+        "#in-progress": "In Progress",
         "#done-cards": "Completed"
     };
 
@@ -170,7 +170,7 @@ function handleDrop(event, ui) {
         console.error("invalid target lane ID:", targetLaneID);
         return;
     }
-    //finding dropped task in tasklist array
+    //finding dropped task in tasklist array using findIndex method
     let droppedTaskIndex = taskList.findIndex(task => task.id ===taskId);
     if (droppedTaskIndex !== -1){
         taskList[droppedTaskIndex].progressState = newProgressState;
@@ -196,7 +196,6 @@ $(document).ready(function () {
 
     $(".task-card-body").draggable({
         revert: "invalid",  
-        //helper: "clone",
         cursor: "crosshair",
         //stack: ".task-card-body",//fix?no
        // appendTo: ".droppable-area"//fix?no
@@ -207,16 +206,10 @@ $(document).ready(function () {
         accept:".task-card-body",
         
 
-        drop: function(event, ui) {
-            $(this).addClass("ui-state-highlight"); // Add the highlight class
-            $(".task-card-body").append(ui.draggable);//attempt to fix?
-            handleDrop(event, ui);
-
-        },
-        out: function(event, ui) {
-            $(this).removeClass("ui-state-highlight"); // Remove the highlight class when dragging out
+       
         
-         }
+        
+      
 
     });
     

@@ -12,5 +12,10 @@ body {
   cursor: grab;
 }
 
-
+.droppable-area {
+  height: 100%;
+  width: 100%;
+  z-index: 1!important;
+  position: relative;
+}
 
