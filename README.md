@@ -13,6 +13,10 @@
 ## Usage
 You can us this great tool here: https://s-bolt.github.io/Task-Board/
 
+## Credits
+Big thank you to my tutor and instructor. 
+They both helped me substantially in debugging and correcting errors in my code regarding the draggable/droppable component of the project.
+
 ## Screenshots
 
 ![Website Screenshot](./assets/images/Screenshot%202024-03-25%20171825.png)
