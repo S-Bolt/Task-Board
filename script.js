@@ -20,9 +20,8 @@ function createTaskCard(task) {
         }   else {
             cardColor = "green";
         };
-    
-    //making the card
-    let $taskCard = $("<div>").addClass("task-card-body").css("background-color", cardColor);//added .css background color to this to express days until due
+
+    let $taskCard = $("<div>").addClass("task-card-body").attr("id",task.id).css("background-color", cardColor);//added .css background color to this to express days until due..added .attr to test fixing the loss of id
     let $cardTitle = $("<h2>").addClass("card-title").text(task.title);
     let $cardDueDate = $("<p>").addClass("card-text").text("Due Date: " + dayjs(task.dueDate).format("MMM D"));//added dayjs format
     let $cardDescription = $("<p>").addClass("card-text").text(task.description);
@@ -152,18 +151,20 @@ function handleDeleteTask(event){
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
     event.preventDefault();
-
-    let taskId = ui.draggable.data("task-id");
+    console.log(taskList);
+    console.log(ui);
+    let taskId = ui.draggable.attr("id"); /// replaced with data to correctly target the element// changed this to relect the new attr created for taskcardbody then replaced data with attr
     let targetLaneID = $(this).attr("id");
-
+    console.log("targetLaneID:", targetLaneID); // Debugging
 //check these match to html id's
     const laneToProgressState = {
-        "to-do-cards": "Not Yet Started", //testing with prefesor
-        "in-progress": "In Progress",
+        "todo-cards": "Not Yet Started", //testing with prefesor
+        "in-progress-cards": "In Progress",
         "done-cards": "Completed"
     };
 
     let newProgressState = laneToProgressState[targetLaneID];
+    console.log("newProgressState:", newProgressState); // Debug 
     console.log("targetLaneID", targetLaneID);
 //checks target lane id matches known lanes
     if (newProgressState === undefined){
