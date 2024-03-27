@@ -8,14 +8,14 @@
     -Create new task
     -View existing task
     -See color coding to alert to proximity of task to due date
-    -Move task into To-do, In-Progress, or Done lanes (not working yet)
+    -Move task into To-do, In-Progress, or Done lanes.
 
 ## Usage
 You can us this great tool here: https://s-bolt.github.io/Task-Board/
 
 ## Credits
 Big thank you to my tutor and instructor. 
-They both helped me substantially in debugging and correcting errors in my code regarding the draggable/droppable component of the project.
+They both helped me substantially in debugging and correcting errors in my code regarding the draggable/droppable component of the project and some of my logic.
 
 ## Screenshots
 

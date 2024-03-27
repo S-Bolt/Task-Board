@@ -5,7 +5,6 @@ let nextId = JSON.parse(localStorage.getItem("nextId")) || 0;//if no value is fo
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
     return  Math.random().toString(36).slice(2, 9);
-    //return nextId++;
 };
 
 // Todo: create a function to create a task card
@@ -84,7 +83,7 @@ function handleAddTask(event){
     let description = $("#taskDescription").val();
 
     let newTaskId = generateTaskId();
-// Check if a task with the same ID already exists using findIndex method"part of debugging effort"
+// Check if a task with the same ID already exists using findIndex method"
 let existingTaskIndex = taskList.findIndex(task => task.id === newTaskId);
 
 if (existingTaskIndex !== -1) {
@@ -152,8 +151,7 @@ function handleDeleteTask(event){
 function handleDrop(event, ui) {
     event.preventDefault();
     console.log(taskList);
-    console.log(ui);
-    let taskId = ui.draggable.attr("id"); /// replaced with data to correctly target the element// changed this to relect the new attr created for taskcardbody then replaced data with attr
+    let taskId = ui.draggable.attr("id"); // Changed this to relect the new attr created for taskcardbody, now works.
     let targetLaneID = $(this).attr("id");
     console.log("targetLaneID:", targetLaneID); // Debugging
 //check these match to html id's
