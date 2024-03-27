@@ -158,9 +158,9 @@ function handleDrop(event, ui) {
 
 //check these match to html id's
     const laneToProgressState = {
-        "#to-do-cards": "Not Yet Started",
-        "#in-progress": "In Progress",
-        "#done-cards": "Completed"
+        "to-do-cards": "Not Yet Started", //testing with prefesor
+        "in-progress": "In Progress",
+        "done-cards": "Completed"
     };
 
     let newProgressState = laneToProgressState[targetLaneID];
@@ -204,7 +204,7 @@ $(document).ready(function () {
 
     $(".droppable-area").droppable({
         accept:".task-card-body",
-        
+        drop: handleDrop
 
        
         
